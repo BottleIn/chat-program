@@ -1,82 +1,186 @@
-# 요구명세서
+# Real-Time Chat Application
 
-# ICT 인턴십 채용 미션 안내
+ 실시간 채팅 애플리케이션
 
-> 해당 문서는 (주) 구름의 ICT 인턴십 채용을 위한 미션 안내 문서로, 미션을 수행하는 본인만 내용을 숙지해주시고 무단 전재 및 재배포를 금지하오니 양해 부탁드립니다.
-> 프로젝트를 Github 등 온라인 상에 업로드하는 경우, 해당 프로젝트가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.
+## 주요 기능
 
-## 주제
+- **실시간 채팅**: Socket.io 기반 다중 사용자 실시간 메시징
+- **메시지 저장**: 브라우저 새로고침 후에도 채팅 내역 유지
+- **채팅 삭제**: 채팅 내역 삭제 기능
+- **귓속말(DM)**: 1:1 비공개 메시지 전송
+- **파일 공유**: 채팅 및 DM에서 파일 업로드/다운로드
 
-실시간 채팅 애플리케이션 개발하기
+## 기술 스택
 
-## 목표
+### Frontend
+- React 18 + TypeScript
+- Vite (빌드 도구)
+- Bootstrap 5 (CSS 프레임워크)
+- Socket.io-client (실시간 통신)
+- Axios (HTTP 클라이언트)
 
-- 제시된 기능을 모두 구현합니다.
-- 렌더링 성능과 데이터의 흐름을 고려하여 React 컴포넌트의 계층 구조를 설계합니다.
-- 역할과 기능에 따라 React 컴포넌트, 속성, 상태 이름에 읽기 쉬운 이름을 부여합니다.
-- 효율적이고 시맨틱한 HTML, CSS 코드를 작성합니다.
-- 효율적인 데이터 관리를 위한 데이터베이스 스키마를 설계합니다.
-- 역할과 기능을 고려하여 REST API를 설계합니다.
-- 요구 사항에 맞는 통신 방법을 선택하여 기능을 구현합니다.
+### Backend
+- Node.js + Express
+- TypeScript
+- Socket.io (실시간 통신)
+- MongoDB + Mongoose (데이터베이스)
+- Express-session (세션 관리)
+- Multer (파일 업로드)
 
-## 기본 요구사항
+## 프로젝트 구조
 
-- 주어진 상세 스펙을 바탕으로 React와 Node.js Express (Typescript) 로 실시간 채팅 기능을 구현합니다.
-- 상세 스펙에는 제시되지 않았지만 구현하면서 스스로 결정한 정책들은 프로젝트 내 마크다운 문서에 작성합니다.
+```
+byby123/
+├── backend/                 # Express 백엔드 서버
+│   ├── src/
+│   │   ├── models/          # Mongoose 스키마
+│   │   ├── routes/          # Express 라우터
+│   │   ├── services/        # 비즈니스 로직
+│   │   └── sockets/         # Socket.io 핸들러
+│   └── index.ts             # 서버 진입점
+├── frontend/                # React 프론트엔드
+│   ├── src/
+│   │   ├── components/      # React 컴포넌트
+│   │   ├── context/         # React Context
+│   │   └── pages/           # 페이지 컴포넌트
+│   └── vite.config.ts
+├── .eslintrc.js
+├── .prettierrc.js
+└── package.json
+```
 
-## 환경 및 세팅
+## 설치 및 실행
 
-**개발 환경**
+### 사전 요구사항
 
-1. [구름IDE](https://ide.goorm.io/)에 접속하여 제공받은 계정으로 로그인합니다.
-1. 생성되어 있는 컨테이너에 접속합니다.
-1. [도움말](https://help.goorm.io/ko/goormide/workspace/features/domains#undefined-1)을 참고하여 3000번 포트와 4000번 포트에 대한 도메인을 생성합니다.
-1. 프로젝트의 root 경로에 있는 `.env` 파일에 위에서 생성한 도메인을 작성합니다. 이 때, 같은 최상위 도메인으로 설정해야 합니다. (app, site)
-1. `npm run start:db` 혹은 `mongod` 명령어를 통해 데이터베이스를 실행합니다.
-1. `npm run start:dev` 혹은 `npm run start:prod` 명령어를 통해 애플리케이션을 실행합니다.
-1. 미션 종료 후 프로젝트 **컨테이너의 공유 링크**와 함께 회신해 주세요.
+- Node.js (v18 이상 권장)
+- MongoDB
+- npm 또는 yarn
 
-**라이브러리**
+### 1. 의존성 설치
 
-- 기본적으로 React, Bootstrap, React-Router, Express, Socket-io, Mongoose 를 사용하며, 추가로 필요한 라이브러리는 패키지 매니저를 통해 자유롭게 설치해 사용할 수 있습니다.
-  - 상태 관리는 별도 라이브러리를 사용하지 않고 `Context API` 를 사용합니다.
-- Bootstrap의 사용법은 [공식 문서](https://getbootstrap.com/)를 참고해주세요.
+```bash
+# 루트 디렉토리에서
+cd byby123
+npm install
 
-**시안**
+# 백엔드 의존성 설치
+cd backend
+npm install
 
-- 아이콘과 같이 화면 구현에 필요한 기본 에셋은 프로젝트에 포함되어 있으나, 필요한 경우 아이콘 공유 웹사이트를 통해 다운로드 받아 사용할 수 있습니다.
-- 화면 구현 시, Bootstrap의 클래스 유틸리티 요소를 최대한 활용해 주세요.
+# 프론트엔드 의존성 설치
+cd ../frontend
+npm install
+```
 
-## 상세 스펙
+### 2. 환경 변수 설정
 
-**실시간 채팅 기능**
+루트 디렉토리에 `.env` 파일을 생성하고 다음 내용을 입력:
 
-- 여러 사람과 소켓을 이용하여 실시간으로 메시지를 주고 받습니다.
-- 브라우저 새로고침이나 재접속을 하더라도 채팅 내역이 유지됩니다.
-- 채팅 내역을 지울 수 있습니다.
-- 귓속말을 통해 1:1로 메시지를 주고 받을 수 있습니다.
+```bash
+# 프론트엔드용 - 백엔드 서버 URL (4000번 포트)
+VITE_SERVER_URL=http://localhost:4000
 
-**파일 공유 기능**
+# 백엔드용 - 프론트엔드 URL (3000번 포트)
+CLIENT_URL=http://localhost:3000
 
-- 메시지를 통해 파일을 공유할 수 있습니다.
-- 귓속말을 통해 1:1로 파일을 공유할 수 있습니다.
+# MongoDB 연결 문자열
+MONGO_URI=mongodb://localhost:27017/chat-app
+```
 
-**화면 구성**
+### 3. MongoDB 실행
 
-- 복수 개의 채팅방을 구현하지 않고 단일 채팅방을 구현합니다.
-- 실시간 채팅 기능과 파일 공유 기능에 알맞는 형태로 화면을 구현합니다.
-- 페이지의 구성은 자유롭게 구성하고, 화면을 Single 페이지 또는 Multiple 페이지로 구현할 수 있습니다.
-- Bootstrap을 활용하여 UI 스타일을 구현합니다.
+```bash
+# MongoDB 시작
+npm run start:db
+# 또는 직접 실행
+mongod
+```
 
-## 추가 구현
+### 4. 개발 서버 실행
 
-**문서화 작업**
+```bash
+# 루트 디렉토리에서 프론트엔드 + 백엔드 동시 실행
+npm run start:dev
+```
 
-- 프로젝트 내에 마크다운(Markdown) 문서를 작성해 주세요.
-- 구현하면서 정한 정책들, 강조하고 싶은 부분 등을 간략하게 작성해 주세요.
+또는 개별 실행:
 
-**기타**
+```bash
+# 백엔드 (터미널 1)
+cd backend
+npm run dev
 
-- 웹 접근성을 향상시키기 위해 [WAI-ARIA 가이드라인](https://www.w3.org/WAI/ARIA/apg/patterns/)에 준수하여 개발해 주세요.
-- 명시되지 않았으나 의사결정이 필요한 사항은 사용자에게 편리한 방향으로 개발해 주세요.
-- 추가적인 질문이나 문의 사항이 있으시면, 메일로 회신 주시기 바랍니다.
+# 프론트엔드 (터미널 2)
+cd frontend
+npm run dev
+```
+
+### 5. 접속
+
+- 프론트엔드: http://localhost:3000
+- 백엔드 API: http://localhost:4000
+
+## 스크립트
+
+### 루트 (`byby123/`)
+
+| 명령어 | 설명 |
+|--------|------|
+| `npm run start:dev` | 개발 모드로 프론트엔드 + 백엔드 실행 |
+| `npm run start:prod` | 프로덕션 빌드 후 실행 |
+| `npm run start:db` | MongoDB 시작 |
+| `npm run lint` | 전체 코드 린트 |
+| `npm run format` | 전체 코드 포맷팅 |
+
+### 백엔드 (`byby123/backend/`)
+
+| 명령어 | 설명 |
+|--------|------|
+| `npm run dev` | nodemon으로 개발 서버 실행 |
+| `npm run build` | TypeScript 컴파일 |
+| `npm start` | 프로덕션 서버 실행 |
+
+### 프론트엔드 (`byby123/frontend/`)
+
+| 명령어 | 설명 |
+|--------|------|
+| `npm run dev` | Vite 개발 서버 실행 |
+| `npm run build` | 프로덕션 빌드 |
+| `npm run preview` | 빌드 결과 미리보기 |
+
+## API 엔드포인트
+
+### 인증 (`/auth`)
+- `POST /auth/signup` - 회원가입
+- `POST /auth/login` - 로그인
+- `GET /auth/logout` - 로그아웃
+- `GET /auth/id` - 현재 로그인 사용자 조회
+
+### 메시지 (`/messages`)
+- `DELETE /messages/:id` - 메시지 삭제
+- `DELETE /messages/clear` - 전체 메시지 삭제
+- `DELETE /messages/clear/:conversationId` - 대화방 메시지 삭제
+
+### 대화 (`/conversations`)
+- `POST /conversations` - 1:1 대화방 생성/조회
+
+### 파일 (`/files`)
+- `POST /files/upload` - 파일 업로드
+- `GET /files/download/:messageId` - 파일 다운로드
+
+### 사용자 (`/users`)
+- `GET /users` - 전체 사용자 목록 조회
+
+## Socket.io 이벤트
+
+### 클라이언트 → 서버
+- `chat message` - 메시지 전송
+- `loadMessages` - 메시지 목록 요청
+- `joinConversation` - 대화방 입장
+- `leaveConversation` - 대화방 퇴장
+
+### 서버 → 클라이언트
+- `chat message` - 새 메시지 수신
+- `messagesLoaded` - 메시지 목록 수신
+

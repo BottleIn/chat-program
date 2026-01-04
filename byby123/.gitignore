@@ -5,7 +5,7 @@ node_modules/
 dist/
 build/
 dist-ssr/
-
+설명/
 # Environment variables
 .env
 .env.local
