@@ -1,0 +1,25 @@
+{
+    "name": "internship-mission",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "lint:fe": "eslint ./frontend --ext ts,tsx --fix --report-unused-disable-directives --max-warnings 0",
+        "lint:be": "eslint ./backend --ext ts,tsx --fix --report-unused-disable-directives --max-warnings 0",
+        "lint": "npm run lint:fe && npm run lint:be",
+        "format:fe": "prettier ./frontend --write",
+        "format:be": "prettier ./backend --write",
+        "format": "npm run format:fe && npm run format:be",
+        "start:db": "mongod",
+        "start:dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+        "start:prod": "concurrently \"cd backend && npm run build && npm start\" \"cd frontend && npm run build && npm run preview\""
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^7.2.0",
+        "@typescript-eslint/parser": "^7.2.0",
+        "concurrently": "^8.2.2",
+        "eslint": "^8.57.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.6",
+        "prettier": "3.3.2"
+    }
+}
