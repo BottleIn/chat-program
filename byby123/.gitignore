@@ -37,8 +37,8 @@ Thumbs.db
 # Session files
 sessions/
 
-# Uploaded files (optional - uncomment if you want to ignore)
-# uploads/
+# Uploaded files
+uploads/
 
 # Goorm IDE
 goorm.manifest
@@ -53,3 +53,7 @@ coverage/
 *.local
 *.tmp
 *.temp
+
+# Config files to exclude
+.gitignore
+.prettierignore
