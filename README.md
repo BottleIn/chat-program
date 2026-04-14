@@ -30,7 +30,7 @@
 ## 프로젝트 구조
 
 ```
-byby123/
+chat_program/
 ├── backend/                 # Express 백엔드 서버
 │   ├── src/
 │   │   ├── models/          # Mongoose 스키마
